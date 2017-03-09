@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  front:
+    image: purplebabar/docker-symfony
+    ports:
+      - 80:80
+    tty: true
+    extra_hosts:
+      - "dev.hermes:127.0.0.1"
+    environment:
+      - MAX_EXECUTIION_TIME=300
+      - DATE_TIMEZONE=Europe/Paris
+    volumes:
+      - /Users/alexandrelalung/Documents/Dev/projects/symfony:/var/www:rw
+      - /Users/alexandrelalung/Documents/Dev/Docker/vhosts/hermes:/etc/nginx/sites-available:rw
+    networks:
+      - default
+
+  db:
+    image: mysql
+    ports:
+      - 127.0.0.1:3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    #   - MYSQL_USER=your_user
+    #   - MYSQL_PASSWORD=your_user_password
+    #   - MYSQL_DATABASE=your_database_name
+    volumes:
+      - /Users/alexandrelalung/Documents/db_docker:/var/lib/mysql:rw
+    networks:
+      - default
+    dns_search:
+      - db
+
+volumes:
+  db: {}
+
+networks:
+  default: {}
